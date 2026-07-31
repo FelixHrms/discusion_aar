@@ -330,6 +330,8 @@
 % bottom, one regression on the firm month data with a common intercept, and the
 % t test on the alpha is the whole verdict. The dots are the firms, all treated
 % alike at this stage.
+% The gamma terms interact D with the factors so each side carries its own betas,
+% that is what makes the pooled alpha exactly equal the spread alpha (Prop 1).
 % SAY, book to market gives 27 bp with t=1.3, no anomaly. Use that verdict as
 % the bridge, it returns on Summary III as the headline suppression case.
 \begin{frame}{Summary I: how a portfolio sort finds an anomaly}
@@ -360,7 +362,7 @@
   \node[font=\tiny, color=accentred, anchor=north] at (3.5,-1.45) {sell short, $D=0$};
   \node[greybox, align=center] (reg) at (7.6,0)
        {one regression on the firm month data\\[2pt]
-        $r_{it} \;=\; a \,+\, \bm{\alpha}\, D_{i,t-1} \,+\, \textstyle\sum_k \beta_k f_{kt} \,+\, \varepsilon_{it}$};
+        $r_{it} \;=\; a \,+\, \bm{\alpha}\, D_{i,t-1} \,+\, \textstyle\sum_k (\beta_k + \gamma_k D_{i,t-1})\, f_{kt} \,+\, \varepsilon_{it}$};
 
   % ---- verdict ----
   \draw[->, line width=0.9pt, color=black!60] (7.6,-0.75) -- (7.6,-1.45);
@@ -411,7 +413,7 @@
   \node[font=\tiny, color=accentred, anchor=north] at (3.5,-1.45) {sell short, $D=0$};
   \node[greybox, align=center] (reg) at (7.6,0)
        {the same regression, now with \hibl{firm fixed effects}\\[2pt]
-        $r_{it} \;=\; \textcolor{accentred}{\bm{\mu_i}} \,+\, \textcolor{goetheblue}{\bm{\apred}}\, D_{i,t-1} \,+\, \textstyle\sum_k \beta_k f_{kt} \,+\, \varepsilon_{it}$};
+        $r_{it} \;=\; \textcolor{accentred}{\bm{\mu_i}} \,+\, \textcolor{goetheblue}{\bm{\apred}}\, D_{i,t-1} \,+\, \textstyle\sum_k (\beta_k + \gamma_k D_{i,t-1})\, f_{kt} \,+\, \varepsilon_{it}$};
 
   % ---- the split ----
   \draw[->, line width=0.9pt, color=black!60] (7.6,-0.75) -- (7.6,-1.45);

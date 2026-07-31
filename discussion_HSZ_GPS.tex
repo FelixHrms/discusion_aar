@@ -11,7 +11,7 @@
 %   1  Background, the classic sort ........ 1.0
 %   2  This paper in one picture ........... 1.5
 %   3  The paper in numbers ................ 1.0
-%   4  Point 1, which question ............. 2.5
+%   4  Point 1, what is the wedge .......... 2.5
 %   5  Point 2, reversal ................... 2.5
 %   6  Smaller points and overall .......... 1.5
 %
@@ -454,32 +454,43 @@ Replacing $\asort$ with $\apred$ flips significance for \hird{36 to 42\%} of the
 
 
 %========================================================================================
-%	POINT 1 (the reclassification inherits the predictive reading)
+%	POINT 1 (take the wedge at face value, what return does permanence imply)
 %========================================================================================
-% Verbal cues: two readings of "X explains the cross section". The verdicts on the
-% zoo presume every anomaly claimed prediction.
-% SAY slowly, the Novy-Marx line, "the paper's inflated verdict on operating
-% profitability CONFIRMS his claim rather than debunks it". That is the punch.
-% Momentum and accruals are the honest counterexamples, genuine within firm
-% claims, there the paper's benchmark is exactly right.
-\begin{frame}{Point 1: The verdicts presume every anomaly claimed prediction}
-\lead{Two readings of ``$X$ explains the cross section''}
+% Verbal cues: stay non technical. Their words on p. 36, permanent residents of the
+% top BM decile "carry substantially lower unconditional expected returns". That is
+% a statement about EXPECTED returns, and decile residency is observable in real
+% time, so it implies a strategy anyone can run.
+% SAY the numbers slowly, 122 bp per month is about 15 percent per year, risk
+% adjusted, forever, from a rule you read off a screen. Momentum residents 38.
+% Then the fork, if real it is the biggest result in the paper, if not real the
+% wedge is in sample history, luck and cohorts over short firm lives, and every
+% Inflated or Compositional verdict inherits the doubt.
+% If probed with "mu hat is not observable ex ante", agree, that is exactly why
+% the proposed test sorts on RESIDENCY, which is observable.
+% The paper calls risk versus mispricing "logically downstream" (p. 9). Counter,
+% it is upstream here, the meaning of every verdict depends on what B is.
+\begin{frame}{Point 1: What is the wedge? Permanence taken at face value}
+\lead{The paper reads the wedge as a fact about expected returns}
 \bit\itemsep2pt
-  \item \higr{$X$ as a signal} \quad a within firm \emph{change} in $X$ predicts returns, \emph{bias} is the \higr{right} word for the wedge
-  \item \hird{$X$ as a type} \quad high $X$ \emph{firms} earn persistently different returns, \emph{bias} is the \hird{wrong} word
+  \item Firms persistently in the top BM decile ``carry substantially lower unconditional \emph{expected} returns'' (p.~36), the residents' gap is $G$, and the wedge is $\hat B=(1-\lambda)\,G$
+  \item Decile residency is \hibl{observable in real time}, so this implies a strategy, hold the residents with the favourable gap and short the others
 \eit
 \svs
-\lead{Part of the literature the paper reclassifies made type claims}
+\begin{center}
+\stat{$+14.7\%$ p.a.}{book to market residents\\ $G=-122.3$ bp per month}\hspace{14pt}
+\stat{$+38.2\%$ p.a.}{momentum residents\\ $G=+318.1$ bp per month}
+\end{center}
+\fignote{Residents' gaps $G$ and permanence $1-\lambda$ from Table 4 of the paper, market model, value weighted decile sorts, $\hat B=(1-\lambda)G$. For BM $1-\lambda=0.943$, so wedge and residents' gap nearly coincide. For momentum $1-\lambda=0.193$, persistent residents are rare. Annualization multiplies the monthly gap by twelve.}
+\lead{Taking it at face value forces a choice, and both readings change the verdicts}
 \bit\itemsep2pt
-  \item \citet{novymarx2013} \quad profitable \emph{firms} earn higher average returns. The ``inflated'' verdict on operating profitability confirms this claim rather than debunks it
-  \item \citet{famafrench2015} \quad profitability and investment premia are return differences \emph{across} firm types, and \citet{danieltitman1997} argue explicitly about characteristic \emph{levels}
-  \item By contrast, momentum \citep{jegadeesh1993} and accruals \citep{sloan1996} are genuine within firm claims, there the prediction alpha is the right benchmark
+  \item \higr{If real} \quad an observable rule earns double digit risk adjusted returns forever. That is the paper's biggest result, not a correction term, and the sort alpha then contains priced compensation \citep{danieltitman1997} that should not be subtracted
+  \item \hird{If not real} \quad $\hat\mu_i$ is \emph{realized} history over short firm lives (their panel averages 125 months per firm), luck and cohorts rather than a type, and every Inflated or Compositional verdict inherits this doubt
 \eit
 \svs
-\lead{Suggestions}
+\lead{Asks, two cheap tests that separate the readings}
 \bit\itemsep2pt
-  \item Frame the verdicts by what each strand claimed, the wedge debunks a signal claim yet confirms a type claim
-  \item Reserve \emph{bias} for strands that claimed prediction
+  \item Sort firms on \emph{past} residency and report the forward returns of residency portfolios
+  \item Split firm lives, does first half $\hat\mu_i$ predict second half alpha? Types persist, luck does not
 \eit
 \end{frame}
 
@@ -577,7 +588,7 @@ Intangible return (C/P)    & 61.9$^{**}$  & \higr{\ding{51}} \\
 \lead{Overall}
 \bit\itemsep2pt
   \item A \hibl{great paper}! I expect the triplet $(\hat\alpha_{\text{OLS}},\hat\alpha_{\text{FE}},\hat B)$ to become standard reporting
-  \item Point 1 \quad the wedge is a bias for signal claims yet not for type claims, tie each verdict to what the strand claimed
+  \item Point 1 \quad at face value the wedge is a double digit permanent alpha from an observable rule, test residency portfolios and identify $B$ before it re judges the zoo
   \item Point 2 \quad the largest resurrections look price-driven, add lagged return controls and the fundamental against price split
 \eit
 \vfill

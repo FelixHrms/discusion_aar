@@ -1,0 +1,596 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Discussion deck (10 minutes)
+% Hoechle, Schmid, Zimmermann, "Generalized Portfolio Sorts:
+% Prediction and Permanence in Anomaly Alpha" (July 2026 version)
+% Discussant: Felix Hermes (Goethe University Frankfurt & ECB)
+%
+% One summary slide, then straight into the discussion points. Backup numbers
+% for Q&A live in the annex and are reachable through the navigation buttons.
+%
+% Suggested timing (about 10 minutes)
+%   1  Background, the classic sort ........ 1.0
+%   2  This paper in one picture ........... 1.5
+%   3  The paper in numbers ................ 1.0
+%   4  Point 1, which question ............. 2.5
+%   5  Point 2, reversal ................... 2.5
+%   6  Smaller points and overall .......... 1.5
+%
+% Compile with pdflatex + biber (bibliography in references_discussion.bib).
+% Style: clean Goldsmith-Pinkham / BSS layout (Lato, no outer theme),
+%        re-coloured to a Goethe Frankfurt deep-blue identity.
+% Writing convention: no colons, semicolons, or dashes used as sentence breaks.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[aspectratio=169,10pt]{beamer}
+\mode<presentation>
+
+%----------------------------------------------------------------------------------------
+%	FONTS, MATH, PACKAGES
+%----------------------------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[default]{lato}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+
+\usepackage{pifont}
+\usepackage{eurosym}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{adjustbox}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{enumerate}
+\usepackage[font=footnotesize,labelfont=bf]{caption}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{tikz}
+\usetikzlibrary{calc,positioning,arrows.meta,decorations.pathreplacing}
+\usepackage{appendixnumberbeamer}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+
+% Author-year citations via biblatex/biber (robust under beamer; natbib=true keeps
+% the familiar \citet / \citep commands working unchanged).
+\usepackage{csquotes}
+\usepackage[style=authoryear,natbib=true,maxcitenames=2,uniquelist=false,
+            doi=false,isbn=false,url=false,eprint=false,backend=biber]{biblatex}
+\addbibresource{references_discussion.bib}
+% Compact in-text citation spacing
+\renewcommand*{\nameyeardelim}{\addspace}
+
+% Resolve graphics from the project root
+\graphicspath{{./}{../}}
+
+%----------------------------------------------------------------------------------------
+%	GOETHE FRANKFURT COLOUR IDENTITY
+%	Deep blue primary, warm accent for emphasis, green for the favourable state.
+%----------------------------------------------------------------------------------------
+\definecolor{goetheblue}{RGB}{0,65,106}     % primary deep blue (matches professor's UniBlue)
+\definecolor{goethelink}{RGB}{0,104,168}    % brighter blue for links
+\definecolor{accentred}{RGB}{196,61,33}     % warm vermillion for emphasis
+\definecolor{accentgreen}{RGB}{0,128,96}    % deep green for the relaxing state
+\definecolor{dividerbg}{RGB}{233,238,244}   % light blue-grey for section dividers
+\definecolor{softgrey}{RGB}{140,140,140}
+
+% Short emphasis macros
+\def\hibl{\textcolor{goetheblue}}
+\def\hird{\textcolor{accentred}}
+\def\higr{\textcolor{accentgreen}}
+\newcommand{\myemph}[1]{\textcolor{goetheblue}{\emph{#1}}}
+
+%----------------------------------------------------------------------------------------
+%	BEAMER LOOK (no outer theme; everything below drives the clean look)
+%----------------------------------------------------------------------------------------
+\setbeamercolor{structure}{fg=goetheblue}
+\setbeamercolor{frametitle}{fg=goetheblue}
+\setbeamercolor{title}{fg=goetheblue}
+\setbeamercolor{subtitle}{fg=softgrey}
+\setbeamercolor{author}{fg=black}
+\setbeamercolor{institute}{fg=softgrey}
+\setbeamercolor{alerted text}{fg=goetheblue}
+\setbeamercolor{itemize item}{fg=goetheblue}
+\setbeamercolor{itemize subitem}{fg=goetheblue}
+\setbeamercolor{itemize subsubitem}{fg=goetheblue}
+\setbeamercolor{enumerate item}{fg=goetheblue}
+\setbeamercolor{block title}{fg=white,bg=goetheblue}
+\setbeamercolor{block body}{fg=black,bg=goetheblue!6}
+\setbeamercolor{section in toc}{fg=goetheblue}
+\setbeamercolor{button}{bg=goetheblue,fg=white}
+
+% Bold, centered frame titles, clearly larger than body text
+\setbeamerfont{frametitle}{series=\bfseries,size=\large}
+\setbeamerfont{title}{series=\bfseries,size=\LARGE}
+
+% Tighter text margins (professor's layout)
+\setbeamersize{text margin left=1em,text margin right=1.5em}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[square]
+\setbeamertemplate{section in toc}[square]
+
+\hypersetup{
+    colorlinks=true,
+    citecolor=goethelink,
+    linkcolor=goethelink,
+    linkbordercolor={white},
+    urlcolor=goethelink
+}
+
+% Centered frame title with a full-width rule a fixed, tight gap beneath.
+% The rule is placed relative to the BASELINE via TikZ, so the gap is identical on
+% every slide regardless of descenders (a plain \vskip is dominated by the line depth,
+% which is why nudging the skip value has almost no visible effect).
+\setbeamertemplate{frametitle}{%
+  \vskip0.5em%
+  \begin{tikzpicture}
+    \node[text width=\textwidth, align=center, inner sep=0pt] (ft)
+      {\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle};
+    \draw[goetheblue, line width=1pt]
+      ([yshift=-0.22em]ft.base west) -- ([yshift=-0.22em]ft.base east);
+  \end{tikzpicture}%
+  \vskip0.6em%
+}
+
+% Footline: a full-width rule with a centered tiny bold frame number (professor's layout)
+\makeatletter
+\setbeamertemplate{footline}{%
+  \centering
+  \begin{minipage}{\dimexpr\paperwidth-\beamer@leftmargin-\beamer@rightmargin\relax}
+  \centering
+  {\color{goetheblue}\rule{\linewidth}{0.8pt}}\vskip2pt
+  {\bfseries\tiny\insertframenumber}\par
+  \end{minipage}\vskip2pt
+}
+\makeatother
+
+% This deck uses no Beamer navigation (no headline, nav symbols off), so suppress the
+% .nav/.snm auxiliary writes. Harmless here, and it avoids an occasional flaky-disk
+% corruption of those files. Remove this block if you ever re-enable navigation.
+\makeatletter
+\def\bm@navext{nav}\def\bm@snmext{snm}
+\let\bm@orig@writefile\@writefile
+\long\def\@writefile#1#2{\def\bm@thisext{#1}%
+  \ifx\bm@thisext\bm@navext\else
+    \ifx\bm@thisext\bm@snmext\else
+      \bm@orig@writefile{#1}{#2}%
+    \fi
+  \fi}
+\makeatother
+
+%----------------------------------------------------------------------------------------
+%	SECTION DIVIDERS (kept for the annex only)
+%----------------------------------------------------------------------------------------
+\newenvironment{transitionframe}{%
+  \setbeamercolor{background canvas}{bg=dividerbg}%
+  \begin{frame}[plain,noframenumbering]\centering\vfill}{%
+  \vfill\end{frame}}
+
+\newcommand{\sectionframe}[1]{%
+  \section{#1}%
+  \begin{transitionframe}%
+  \begin{tikzpicture}
+    \node[inner sep=0pt] (st) {\LARGE\color{goetheblue}\textbf{#1}};
+    % Rules placed symmetrically around the actual text box, so the title sits
+    % optically centred between them whatever its ascenders/descenders.
+    \draw[goetheblue, line width=1pt]
+      ([xshift=-0.275\textwidth, yshift=0.85em]st.north) -- ([xshift=0.275\textwidth, yshift=0.85em]st.north);
+    \draw[goetheblue, line width=1pt]
+      ([xshift=-0.275\textwidth, yshift=-0.85em]st.south) -- ([xshift=0.275\textwidth, yshift=-0.85em]st.south);
+  \end{tikzpicture}%
+  \end{transitionframe}}
+
+%----------------------------------------------------------------------------------------
+%	HELPERS
+%----------------------------------------------------------------------------------------
+\newcommand{\lvs}{\vspace{0.32cm}}
+\newcommand{\svs}{\vspace{0.18cm}}
+\newcommand{\hvs}{\vspace{0.6cm}}
+
+\newcommand{\bit}{\begin{itemize}}
+\newcommand{\eit}{\end{itemize}}
+\newcommand{\ben}{\begin{enumerate}}
+\newcommand{\een}{\end{enumerate}}
+\newcommand{\beq}{\begin{equation*}}
+\newcommand{\eeq}{\end{equation*}}
+
+% Roomier itemize for body slides
+\newenvironment{wideitemize}{\itemize\addtolength{\itemsep}{0.45pc}}{\enditemize}
+
+% Takeaway: a filled triangle bullet with bold blue text (professor's conclusion style).
+% The hanging indent keeps wrapped lines aligned under the text, not under the marker.
+\newcommand{\takeaway}[1]{%
+  \par\smallskip\noindent
+  \hangindent=1.4em\hangafter=1
+  \textcolor{goetheblue}{$\blacktriangleright$}\ {\color{goetheblue}\bfseries #1}\par}
+
+% Bold lead-in header that stands on its own line (avoids the colon construction)
+\newcommand{\lead}[1]{{\bfseries #1}\par\nopagebreak}
+
+% ---- Table/figure notes that match the width of the object above them ---------------
+% Wrap a table or figure so the following \fignote spans exactly the same width and no
+% more. Two wrappers record the fractions [lf,rf] of the box that the note should span:
+%   \measurebox{<obj>}          note spans the whole box (tables, lf=0, rf=1)
+%   \measureplot{lf}{rf}{<fig>} note spans only the plotting area between the axes.
+\newsavebox{\tfigbox}
+\newlength{\tfigwidth}
+\newlength{\tfignl}
+\newlength{\tfignr}
+\newif\iftfigwidth
+\def\tfiglf{0}\def\tfigrf{1}
+\newcommand{\measurebox}[1]{%
+  \gdef\tfiglf{0}\gdef\tfigrf{1}%
+  \sbox{\tfigbox}{#1}%
+  \global\tfigwidth=\wd\tfigbox\relax
+  \global\tfigwidthtrue
+  \usebox{\tfigbox}%
+}
+\newcommand{\measureplot}[3]{%
+  \gdef\tfiglf{#1}\gdef\tfigrf{#2}%
+  \sbox{\tfigbox}{#3}%
+  \global\tfigwidth=\wd\tfigbox\relax
+  \global\tfigwidthtrue
+  \usebox{\tfigbox}%
+}
+
+% Small grey note, leaves the bottom-right corner free for a button. Fixed gap ABOVE and
+% BELOW, independent of the surrounding environment. Do not add \svs around it.
+\newcommand{\fignote}[1]{%
+  \par\addvspace{7pt}%
+  \iftfigwidth
+    \global\tfigwidthfalse
+    \setlength{\tfignl}{\tfiglf\tfigwidth}%
+    \setlength{\tfignr}{\dimexpr\tfigwidth-\tfigrf\tfigwidth\relax}%
+    {\centering
+     \begin{minipage}{\tfigwidth}%
+       \parindent=0pt \leftskip=\tfignl \rightskip=\tfignr \emergencystretch=1.5em
+       \tiny\color{softgrey} #1\par
+     \end{minipage}\par}%
+  \else
+    {\tiny\color{softgrey} #1\par}%
+  \fi
+  \addvspace{9pt}%
+}
+
+% Navigation button at a fixed bottom-right position (decoupled from content flow, so it
+% never collides with the body or the footer). Its right edge is aligned with the right
+% end of the blue footline rule.
+\makeatletter
+\newlength{\navbtnx}
+\setlength{\navbtnx}{\dimexpr\paperwidth-0.5\beamer@leftmargin-0.5\beamer@rightmargin-4cm\relax}
+% Wider variant for slides that carry two buttons side by side.
+\newlength{\navbtnwx}
+\setlength{\navbtnwx}{\dimexpr\paperwidth-0.5\beamer@leftmargin-0.5\beamer@rightmargin-8cm\relax}
+\makeatother
+\newcommand{\navbtn}[2]{%
+  \begin{textblock*}{4cm}(\navbtnx,0.915\paperheight)%
+    \raggedleft\hyperlink{#1}{\beamerbutton{#2}}%
+  \end{textblock*}}
+% Two buttons in one bottom-right block, e.g. \navbtnTwo{tgtA}{labelA}{tgtB}{labelB}
+\newcommand{\navbtnTwo}[4]{%
+  \begin{textblock*}{8cm}(\navbtnwx,0.915\paperheight)%
+    \raggedleft\hyperlink{#1}{\beamerbutton{#2}}\hspace{2pt}\hyperlink{#3}{\beamerbutton{#4}}%
+  \end{textblock*}}
+
+% Highlight box for a headline statistic
+\tikzset{keybox/.style={rectangle, rounded corners=3pt, draw=goetheblue,
+  fill=goetheblue!7, line width=1pt, inner sep=8pt, align=center}}
+\tikzset{redbox/.style={rectangle, rounded corners=3pt, draw=accentred,
+  fill=accentred!7, line width=1pt, inner sep=6pt, align=center, font=\footnotesize}}
+\tikzset{greenbox/.style={rectangle, rounded corners=3pt, draw=accentgreen,
+  fill=accentgreen!7, line width=1pt, inner sep=6pt, align=center, font=\footnotesize}}
+\tikzset{greybox/.style={rectangle, rounded corners=3pt, draw=black!40,
+  fill=black!4, line width=0.8pt, inner sep=6pt, align=center, font=\footnotesize}}
+
+\newcommand{\stat}[2]{\tikz[baseline]{\node[keybox]{{\large\textbf{\color{goetheblue}#1}}\\[1pt]{\footnotesize #2}};}}
+
+% Shorthands for the three GPS objects
+\newcommand{\asort}{\alpha^{\text{sort}}}
+\newcommand{\apred}{\alpha^{\text{pred}}}
+
+%----------------------------------------------------------------------------------------
+%	TITLE METADATA
+%----------------------------------------------------------------------------------------
+\title[Discussion of Hoechle, Schmid, and Zimmermann]{Discussion of ``Generalized Portfolio Sorts: Prediction and Permanence in Anomaly Alpha''}
+\author[Felix Hermes]{Felix Hermes}
+\institute[]{Goethe University Frankfurt \quad European Central Bank}
+% Edit the venue and date for the workshop below.
+\date{Aarhus Finance Forum 2026}
+
+\begin{document}
+
+%========================================================================================
+%	TITLE
+%========================================================================================
+\begin{frame}[plain,noframenumbering]
+  \vfill
+  \begin{center}
+    {\color{goetheblue}\rule{0.16\textwidth}{2.2pt}}\\[0.9em]
+    {\color{softgrey}\large Discussion of}\\[0.7em]
+    {\usebeamerfont{title}\usebeamercolor[fg]{title}Generalized Portfolio Sorts:\\[2pt] Prediction and Permanence in Anomaly Alpha}\\[0.9em]
+    {\large by Daniel Hoechle, Markus Schmid, and Heinz Zimmermann}\\[1.7em]
+    {\large Felix Hermes}\\[0.5em]
+    {\color{softgrey}\insertinstitute}\\[1.4em]
+    {\color{softgrey}\insertdate}
+  \end{center}
+  \vfill
+  \begin{center}
+    {\scriptsize\color{softgrey} This discussion should not be reported as representing the views of the European Central Bank (ECB). The views expressed are those of the author and do not necessarily reflect those of the ECB.}
+  \end{center}
+\end{frame}
+
+
+%========================================================================================
+%	SUMMARY (3 slides, the classic recipe, this paper's picture, then the numbers)
+%========================================================================================
+% Verbal cues: walk the pipeline once. Sort on X, buy the top decile, short the
+% bottom, one regression on the firm month data with a common intercept, and the
+% t test on the alpha is the whole verdict. The dots are the firms, all treated
+% alike at this stage.
+% SAY, book to market gives 27 bp with t=1.3, no anomaly. Use that verdict as
+% the bridge, it returns on Summary III as the headline suppression case.
+\begin{frame}{Summary I: how a portfolio sort finds an anomaly}
+\svs
+\begin{center}
+\scalebox{1.10}{%
+\begin{tikzpicture}[font=\footnotesize, >=Stealth]
+  % ---- the sorted cross section (same column as on the next slide) ----
+  \node[font=\tiny, color=softgrey] at (0,2.8) {sort stocks on $X$ each month, for example book to market};
+  \node[draw=goetheblue, line width=1pt, rounded corners=3pt,
+        minimum width=4.4cm, minimum height=1.9cm] (top) at (0,1.5) {};
+  \node[anchor=north, font=\scriptsize\bfseries, color=goetheblue] at ([yshift=-3pt]top.north) {Top decile};
+  \node[font=\tiny, color=softgrey] at (0,1.15) {highest $X$};
+  \node[draw=goetheblue, line width=1pt, rounded corners=3pt,
+        minimum width=4.4cm, minimum height=1.9cm] (bot) at (0,-1.5) {};
+  \node[anchor=south, font=\scriptsize\bfseries, color=goetheblue] at ([yshift=3pt]bot.south) {Bottom decile};
+  \node[font=\tiny, color=softgrey] at (0,-1.15) {lowest $X$};
+  \node[font=\tiny, color=softgrey] at (0,0) {deciles 2 to 9, dropped};
+
+  % the firms, all treated alike (same dot positions as on the next slide)
+  \foreach \p in {(-1.5,1.55),(-1.1,1.2),(-1.5,0.85),(1.55,0.85)} \fill[goetheblue] \p circle (2.4pt);
+  \foreach \p in {(-1.5,-1.4),(-1.1,-1.75),(-1.5,-2.1),(1.55,-0.85)} \fill[goetheblue] \p circle (2.4pt);
+
+  % ---- both groups into one regression ----
+  \draw[->, line width=0.9pt, accentgreen] (2.3,1.4) -- (4.35,0.5);
+  \node[font=\tiny, color=accentgreen, anchor=south] at (3.5,1.45) {buy, $D=1$};
+  \draw[->, line width=0.9pt, accentred] (2.3,-1.4) -- (4.35,-0.5);
+  \node[font=\tiny, color=accentred, anchor=north] at (3.5,-1.45) {sell short, $D=0$};
+  \node[greybox, align=center] (reg) at (7.6,0)
+       {one regression on the firm month data\\[2pt]
+        $r_{it} \;=\; a \,+\, \bm{\alpha}\, D_{i,t-1} \,+\, \textstyle\sum_k \beta_k f_{kt} \,+\, \varepsilon_{it}$};
+
+  % ---- verdict ----
+  \draw[->, line width=0.9pt, color=black!60] (7.6,-0.75) -- (7.6,-1.45);
+  \node[font=\tiny, color=softgrey, anchor=west] at (7.75,-1.1) {$t$ test on $\alpha$};
+  \node[keybox, font=\scriptsize, align=center] at (7.6,-2.05)
+       {$\alpha$ significant $\;\Rightarrow\;$ an \textbf{anomaly}\\[1pt]
+        $X$ predicts returns beyond factor risk};
+\end{tikzpicture}}
+\end{center}
+\end{frame}
+
+
+% Verbal cues: the same picture, but the dots get colors. Blue switchers crossed
+% the threshold, red residents never move. If the residents differ in average
+% returns, the common intercept cannot absorb that gap, it lands in alpha,
+% omitted variable bias. GPS replaces a with mu_i, one intercept per firm, which
+% absorbs the gap, and the old sort alpha splits exactly into blue plus red.
+\begin{frame}{Summary II: the portfolios mix two kinds of firms}
+\svs
+\begin{center}
+\scalebox{1.10}{%
+\begin{tikzpicture}[font=\footnotesize, >=Stealth]
+  % ---- the same sorted cross section, now with the firms visible ----
+  \node[font=\tiny, color=softgrey] at (0,2.8) {the same sorted portfolios, firm by firm};
+  \node[draw=goetheblue, line width=1pt, rounded corners=3pt,
+        minimum width=4.4cm, minimum height=1.9cm] (top) at (0,1.5) {};
+  \node[anchor=north, font=\scriptsize\bfseries, color=goetheblue] at ([yshift=-3pt]top.north) {Top decile};
+  \node[draw=goetheblue, line width=1pt, rounded corners=3pt,
+        minimum width=4.4cm, minimum height=1.9cm] (bot) at (0,-1.5) {};
+  \node[anchor=south, font=\scriptsize\bfseries, color=goetheblue] at ([yshift=3pt]bot.south) {Bottom decile};
+  \node[font=\tiny, color=softgrey] at (0,0) {deciles 2 to 9, dropped};
+
+  % the same dots, now coloured, red residents never move
+  \foreach \p in {(-1.5,1.55),(-1.1,1.2),(-1.5,0.85)} \fill[accentred] \p circle (2.4pt);
+  \node[font=\tiny, color=accentred, anchor=west] at (-0.9,1.2) {permanent residents};
+  \foreach \p in {(-1.5,-1.4),(-1.1,-1.75),(-1.5,-2.1)} \fill[accentred] \p circle (2.4pt);
+  \node[font=\tiny, color=accentred, anchor=west] at (-0.9,-1.75) {permanent residents};
+  % blue switchers cross the threshold
+  \fill[goetheblue] (1.55,0.85) circle (2.4pt);
+  \fill[goetheblue] (1.55,-0.85) circle (2.4pt);
+  \draw[<->, goetheblue, line width=0.9pt] (1.55,-0.72) -- (1.55,0.72);
+  \node[font=\tiny, color=goetheblue, anchor=west] at (1.72,0) {switchers};
+
+  % ---- the same groups into the same regression ----
+  \draw[->, line width=0.9pt, accentgreen] (2.3,1.4) -- (4.35,0.5);
+  \node[font=\tiny, color=accentgreen, anchor=south] at (3.5,1.45) {buy, $D=1$};
+  \draw[->, line width=0.9pt, accentred] (2.3,-1.4) -- (4.35,-0.5);
+  \node[font=\tiny, color=accentred, anchor=north] at (3.5,-1.45) {sell short, $D=0$};
+  \node[greybox, align=center] (reg) at (7.6,0)
+       {the same regression, now with \hibl{firm fixed effects}\\[2pt]
+        $r_{it} \;=\; \textcolor{accentred}{\bm{\mu_i}} \,+\, \textcolor{goetheblue}{\bm{\apred}}\, D_{i,t-1} \,+\, \textstyle\sum_k \beta_k f_{kt} \,+\, \varepsilon_{it}$};
+
+  % ---- the split ----
+  \draw[->, line width=0.9pt, color=black!60] (7.6,-0.75) -- (7.6,-1.45);
+  \node[font=\tiny, color=softgrey, anchor=west] at (7.75,-1.1) {exact split};
+  \node[keybox, font=\scriptsize, align=center] at (7.6,-2.05)
+       {$\asort \;=\; \textcolor{goetheblue}{\bm{\apred}} \;+\; \textcolor{accentred}{\bm{B}}$\\[1pt]
+        the \hibl{switchers'} prediction plus the \hird{residents'} gap};
+\end{tikzpicture}}
+\end{center}
+\end{frame}
+
+
+% Verbal cues: the BM headline first, 26.7 insignificant masks 142.0 (t=4.53)
+% against -115.3, then one case per pattern. Close with the 36-42% stat, 32
+% anomalies lose significance and 29 gain under the market model.
+\begin{frame}{Summary III: Results}
+\svs
+\lead{Across 171 anomalies \quad {\normalfont\color{softgrey}\citep{chen2022}}}
+\svs
+\begin{center}
+\scriptsize
+\setlength{\tabcolsep}{13pt}
+\renewcommand{\arraystretch}{1.45}
+\measurebox{\begin{tabular}{lcccl}
+\toprule
+\textbf{bp per month} & Sort $\hat\alpha$ & Prediction $\hat\alpha$ & Wedge $\hat B$ & Reading \\
+\midrule
+\rowcolor{goetheblue!8}
+Book to market          & 26.7          & 142.0$^{***}$ & $-$115.3$^{***}$ & suppressed \\
+Operating profitability & 53.1$^{***}$  & 26.3          & $+$26.8$^{*}$    & inflated \\
+Momentum (12m)          & 137.9$^{***}$ & 76.6$^{***}$  & $+$61.3$^{***}$  & inflated \\
+Short interest          & 54.4$^{***}$  & 54.6$^{***}$  & $-$0.2           & neutral \\
+\bottomrule
+\end{tabular}}
+\end{center}
+\fignote{Table 4 of the paper, market model, value weighted decile sorts. The book to market $t$ statistics are 1.30 (sort) and 4.53 (prediction). Alpha stars use Driscoll Kraay standard errors, wedge stars the Hausman test. $^{*}\,p<0.10$, $^{***}\,p<0.01$.}
+\svs
+Replacing $\asort$ with $\apred$ flips significance for \hird{36 to 42\%} of the 171 anomalies, 32 lose and 29 gain under the market model.
+\end{frame}
+
+
+%========================================================================================
+%	POINT 1 (the reclassification inherits the predictive reading)
+%========================================================================================
+% Verbal cues: two readings of "X explains the cross section". The verdicts on the
+% zoo presume every anomaly claimed prediction.
+% SAY slowly, the Novy-Marx line, "the paper's inflated verdict on operating
+% profitability CONFIRMS his claim rather than debunks it". That is the punch.
+% Momentum and accruals are the honest counterexamples, genuine within firm
+% claims, there the paper's benchmark is exactly right.
+\begin{frame}{Point 1: The verdicts presume every anomaly claimed prediction}
+\lead{Two readings of ``$X$ explains the cross section''}
+\bit\itemsep2pt
+  \item \higr{$X$ as a signal} \quad a within firm \emph{change} in $X$ predicts returns, \emph{bias} is the \higr{right} word for the wedge
+  \item \hird{$X$ as a type} \quad high $X$ \emph{firms} earn persistently different returns, \emph{bias} is the \hird{wrong} word
+\eit
+\svs
+\lead{Part of the literature the paper reclassifies made type claims}
+\bit\itemsep2pt
+  \item \citet{novymarx2013} \quad profitable \emph{firms} earn higher average returns. The ``inflated'' verdict on operating profitability confirms this claim rather than debunks it
+  \item \citet{famafrench2015} \quad profitability and investment premia are return differences \emph{across} firm types, and \citet{danieltitman1997} argue explicitly about characteristic \emph{levels}
+  \item By contrast, momentum \citep{jegadeesh1993} and accruals \citep{sloan1996} are genuine within firm claims, there the prediction alpha is the right benchmark
+\eit
+\svs
+\lead{Suggestions}
+\bit\itemsep2pt
+  \item Frame the verdicts by what each strand claimed, the wedge debunks a signal claim yet confirms a type claim
+  \item Reserve \emph{bias} for strands that claimed prediction
+\eit
+\end{frame}
+
+
+%========================================================================================
+%	POINT 2 (the Suppressed cell is price and return based, reversal fits the signs)
+%========================================================================================
+% Verbal cues: alpha-pred keeps only the switchers, and for a price based
+% characteristic a decile switch IS a large past return.
+% SAY, the panel contrast, price sits in X for 8 of the 10 largest resurrections
+% yet only 4 of the 10 smallest, so this is not just a base rate across the zoo.
+% SAY, the signs, a crash sends a firm INTO top value (alpha-pred positive) and
+% OUT of big size (negative), losers rebound, winners fall back.
+% SAY, the paper itself concedes this exogeneity caveat for momentum (p. 36 and
+% Appendix E, "illustrative rather than definitive"), the ask is to apply the
+% same standard to price scaled sorts.
+% If probed on the red crosses, PIN and option volume are trading activity
+% measures that spike in big return months, not clean counterexamples.
+\begin{frame}{Point 2: The resurrected prediction alphas look price-driven}
+\lead{The resurrected anomalies, largest against smallest \quad {\normalfont\color{softgrey}sort $\hat\alpha$ insignificant, prediction $\hat\alpha$ significant}}
+\begin{columns}[t]
+\begin{column}{0.48\textwidth}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.0}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Ten largest} & Prediction $\hat\alpha$ & Price in $X$ \\
+\midrule
+Size                    & $-$445.5$^{***}$ & \higr{\ding{51}} \\
+Advertising to market   & 370.8$^{***}$    & \higr{\ding{51}} \\
+Dollar volume           & 349.2$^{***}$    & \higr{\ding{51}} \\
+Illiquidity             & 348.3$^{***}$    & \higr{\ding{51}} \\
+Informed trading (PIN)  & 290.4$^{***}$    & \hird{\ding{55}} \\
+Sales to price          & 280.4$^{***}$    & \higr{\ding{51}} \\
+Leverage                & 274.4$^{***}$    & \higr{\ding{51}} \\
+Option to stock volume  & 267.5$^{***}$    & \hird{\ding{55}} \\
+Assets to market        & 217.0$^{***}$    & \higr{\ding{51}} \\
+Book to market (Dec)    & 157.4$^{***}$    & \higr{\ding{51}} \\
+\bottomrule
+\end{tabular}
+\end{column}
+\begin{column}{0.48\textwidth}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.0}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Ten smallest} & Prediction $\hat\alpha$ & Price in $X$ \\
+\midrule
+ChNNCOA                    & 21.4$^{**}$  & \hird{\ding{55}} \\
+RDS                        & 32.0$^{**}$  & \hird{\ding{55}} \\
+Off season momentum 11y$+$ & 36.3$^{**}$  & \higr{\ding{51}} \\
+Advertising growth         & 38.6$^{**}$  & \hird{\ding{55}} \\
+Revenue growth rank        & 41.2$^{**}$  & \hird{\ding{55}} \\
+Total accruals             & 41.9$^{***}$ & \hird{\ding{55}} \\
+$\Delta$ current op.\ assets & 42.9$^{***}$ & \hird{\ding{55}} \\
+Earnings to price          & 44.1$^{***}$ & \higr{\ding{51}} \\
+Price delay $R^2$          & 53.4$^{***}$ & \higr{\ding{51}} \\
+Intangible return (C/P)    & 61.9$^{**}$  & \higr{\ding{51}} \\
+\bottomrule
+\end{tabular}
+\end{column}
+\end{columns}
+
+\vspace{8pt}
+\bit\itemsep1pt
+  \item A firm switches \emph{into} top value because its price \hird{crashed}, \emph{into} big size because it \higr{ran up}. Losers rebound, winners fall back, so $\apred>0$ for value, $\apred<0$ for size
+\eit
+\lead{Asks}
+\bit\itemsep1pt
+  \item Split characteristic movements into fundamental and price driven parts {\scriptsize\color{softgrey}\citep{gerakos2018}}
+  \item Add \hibl{lagged return controls} to the panel, one extra specification for all 171 anomalies
+\eit
+\end{frame}
+
+
+%========================================================================================
+%	SMALLER POINTS + OVERALL
+%========================================================================================
+% Verbal cues: power (BM identifies alpha-pred off ~6%, insignificant is not zero);
+% mu_i fixed over 61 years while firm types drift; footnote 11, HML is itself a
+% sorted portfolio, factor adjustment imports a wedge of its own. Close warm,
+% great paper, then one line per main point.
+\begin{frame}{Smaller points and overall assessment}
+\svs
+\lead{Smaller points}
+\bit\itemsep2pt
+  \item High permanence sorts estimate $\apred$ from little variation, for BM about \hird{6\%}. Insignificant is not zero, show confidence intervals before reclassifying
+  \item $\mu_i$ is fixed over \hibl{61 years} while firm types drift, decade interacted firm effects would bound the slow moving part of the wedge
+\eit
+\svs
+\lead{Overall}
+\bit\itemsep2pt
+  \item A \hibl{great paper}! I expect the triplet $(\hat\alpha_{\text{OLS}},\hat\alpha_{\text{FE}},\hat B)$ to become standard reporting
+  \item Point 1 \quad the wedge is a bias for signal claims yet not for type claims, tie each verdict to what the strand claimed
+  \item Point 2 \quad the largest resurrections look price-driven, add lagged return controls and the fundamental against price split
+\eit
+\vfill
+\begin{center}{\color{goetheblue}\textbf{Thank you}}\end{center}
+\vfill
+\end{frame}
+
+%========================================================================================
+% References
+%========================================================================================
+\begin{frame}[allowframebreaks]{References}
+\small
+\printbibliography[heading=none]
+\end{frame}
+
+\end{document}

@@ -469,28 +469,32 @@ Replacing $\asort$ with $\apred$ flips significance for \hird{36 to 42\%} of the
 % the proposed test sorts on RESIDENCY, which is observable.
 % The paper calls risk versus mispricing "logically downstream" (p. 9). Counter,
 % it is upstream here, the meaning of every verdict depends on what B is.
+% Short firm lives, their joint panel has 12,366 firms and 1.55m firm months,
+% about 125 months per firm (p. 47), so mu hat is a ten year average, not a type.
 \begin{frame}{Point 1: What is the wedge? Permanence taken at face value}
-\lead{The paper reads the wedge as a fact about expected returns}
+\lead{The paper reads the wedge as expected returns}
 \bit\itemsep2pt
-  \item Firms persistently in the top BM decile ``carry substantially lower unconditional \emph{expected} returns'' (p.~36), the residents' gap is $G$, and the wedge is $\hat B=(1-\lambda)\,G$
-  \item Decile residency is \hibl{observable in real time}, so this implies a strategy, hold the residents with the favourable gap and short the others
+  \item Top BM residents ``carry substantially lower unconditional \emph{expected} returns'' (p.~36)
+  \item Residency is \hibl{observable in real time}, so the claim implies a simple trading rule
 \eit
 \svs
-\begin{center}
-\stat{$+14.7\%$ p.a.}{book to market residents\\ $G=-122.3$ bp per month}\hspace{14pt}
-\stat{$+38.2\%$ p.a.}{momentum residents\\ $G=+318.1$ bp per month}
-\end{center}
-\fignote{Residents' gaps $G$ and permanence $1-\lambda$ from Table 4 of the paper, market model, value weighted decile sorts, $\hat B=(1-\lambda)G$. For BM $1-\lambda=0.943$, so wedge and residents' gap nearly coincide. For momentum $1-\lambda=0.193$, persistent residents are rare. Annualization multiplies the monthly gap by twelve.}
-\lead{Taking it at face value forces a choice, and both readings change the verdicts}
+\lead{What that rule earns at their own numbers}
 \bit\itemsep2pt
-  \item \higr{If real} \quad an observable rule earns double digit risk adjusted returns forever. That is the paper's biggest result, not a correction term, and the sort alpha then contains priced compensation \citep{danieltitman1997} that should not be subtracted
-  \item \hird{If not real} \quad $\hat\mu_i$ is \emph{realized} history over short firm lives (their panel averages 125 months per firm), luck and cohorts rather than a type, and every Inflated or Compositional verdict inherits this doubt
+  \item Book to market \quad long permanent growth, short permanent value residents \quad \hird{$+14.7\%$ p.a.}
+  \item Momentum \quad long permanent winners, short permanent losers \quad \hird{$+38.2\%$ p.a.}
+  \item Risk adjusted, permanent, read off a screen \quad {\color{softgrey}\footnotesize gaps of 122.3 and 318.1 bp per month, Table 4}
 \eit
 \svs
-\lead{Asks, two cheap tests that separate the readings}
+\lead{Either way the verdicts change}
 \bit\itemsep2pt
-  \item Sort firms on \emph{past} residency and report the forward returns of residency portfolios
-  \item Split firm lives, does first half $\hat\mu_i$ predict second half alpha? Types persist, luck does not
+  \item \higr{If real} \quad this is the paper's headline result, and subtracting priced compensation is wrong
+  \item \hird{If not} \quad $\hat\mu_i$ is in sample luck over short firm lives, the reclassifications inherit the doubt
+\eit
+\svs
+\lead{Asks}
+\bit\itemsep2pt
+  \item Report forward returns of portfolios sorted on \emph{past} residency
+  \item Split firm lives, first half $\hat\mu_i$ against second half alpha. Types persist, luck does not
 \eit
 \end{frame}
 
